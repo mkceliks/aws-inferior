@@ -16,14 +16,11 @@ import (
 
 var cognitoClient *cognitoidentityprovider.CognitoIdentityProvider
 
-// Initialize the AWS Cognito client
 func init() {
-	// Create a new session using the default credentials and config from the environment
 	sess := session.Must(session.NewSession())
 	cognitoClient = cognitoidentityprovider.New(sess)
 }
 
-// signUpUser function to sign up a new user
 func signUpUser(email, password string) error {
 	input := &cognitoidentityprovider.SignUpInput{
 		ClientId: aws.String(config.ClientID),
@@ -44,7 +41,6 @@ func signUpUser(email, password string) error {
 	return nil
 }
 
-// signInUser function to authenticate a user
 func signInUser(email, password string) (*cognitoidentityprovider.InitiateAuthOutput, error) {
 	input := &cognitoidentityprovider.InitiateAuthInput{
 		ClientId: aws.String(config.ClientID),
@@ -61,7 +57,6 @@ func signInUser(email, password string) (*cognitoidentityprovider.InitiateAuthOu
 	return result, nil
 }
 
-// confirmSignUp function to confirm user sign-up
 func confirmSignUp(email, code string) error {
 	input := &cognitoidentityprovider.ConfirmSignUpInput{
 		ClientId:         aws.String(config.ClientID),
@@ -76,7 +71,6 @@ func confirmSignUp(email, code string) error {
 	return nil
 }
 
-// SignUp handler function
 func signUpUserHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var signUpReq entity.SignUpRequest
 	if err := json.Unmarshal([]byte(req.Body), &signUpReq); err != nil {
@@ -86,7 +80,6 @@ func signUpUserHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 		}, nil
 	}
 
-	// Sign up the user
 	err := signUpUser(signUpReq.Email, signUpReq.Password)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -101,7 +94,6 @@ func signUpUserHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	}, nil
 }
 
-// SignIn handler function
 func signInUserHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var signInReq entity.SignInRequest
 	if err := json.Unmarshal([]byte(req.Body), &signInReq); err != nil {
@@ -126,7 +118,6 @@ func signInUserHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProx
 	}, nil
 }
 
-// ConfirmSignUp handler function
 func confirmSignUpHandler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var confirmReq entity.ConfirmSignUpRequest
 	if err := json.Unmarshal([]byte(req.Body), &confirmReq); err != nil {
@@ -136,7 +127,6 @@ func confirmSignUpHandler(req events.APIGatewayProxyRequest) (events.APIGatewayP
 		}, nil
 	}
 
-	// Confirm sign-up
 	err := confirmSignUp(confirmReq.Email, confirmReq.Code)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
@@ -151,7 +141,6 @@ func confirmSignUpHandler(req events.APIGatewayProxyRequest) (events.APIGatewayP
 	}, nil
 }
 
-// Entry point for the Lambda function
 func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	switch req.Path {
 	case "/signup":
@@ -169,6 +158,5 @@ func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 }
 
 func main() {
-	// Start the Lambda function
 	lambda.Start(handler)
 }

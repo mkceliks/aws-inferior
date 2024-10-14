@@ -9,12 +9,10 @@ import (
 	"github.com/aws/jsii-runtime-go"
 )
 
-// Define the MentorshipAppStackProps struct, which will inherit from StackProps
 type MentorshipAppStackProps struct {
 	awscdk.StackProps
 }
 
-// Create Cognito User Pool
 func CreateUserPool(stack awscdk.Stack) awscognito.UserPool {
 	userPool := awscognito.NewUserPool(stack, jsii.String("inferior-userpool"), &awscognito.UserPoolProps{
 		UserPoolName: jsii.String("inferior"),
@@ -39,7 +37,6 @@ func CreateUserPool(stack awscdk.Stack) awscognito.UserPool {
 	return userPool
 }
 
-// Create Cognito User Pool Client
 func CreateUserPoolClient(stack awscdk.Stack, userPool awscognito.UserPool) {
 	userPoolClient := awscognito.NewUserPoolClient(stack, jsii.String("inferior-client"), &awscognito.UserPoolClientProps{
 		UserPool:       userPool,
@@ -52,7 +49,6 @@ func CreateUserPoolClient(stack awscdk.Stack, userPool awscognito.UserPool) {
 	})
 }
 
-// Function to create a Lambda function from Docker image
 func CreateDockerLambdaFunction(stack awscdk.Stack) awslambda.Function {
 	myLambda := awslambda.NewFunction(stack, jsii.String("MyDockerLambdaFunction"), &awslambda.FunctionProps{
 		Runtime: awslambda.Runtime_PROVIDED_AL2(),
@@ -68,7 +64,6 @@ func CreateDockerLambdaFunction(stack awscdk.Stack) awslambda.Function {
 	return myLambda
 }
 
-// Function to create an API Gateway
 func CreateApiGateway(stack awscdk.Stack, myLambda awslambda.Function) {
 	api := awsapigateway.NewLambdaRestApi(stack, jsii.String("MyApiGateway"), &awsapigateway.LambdaRestApiProps{
 		Handler: myLambda,
@@ -80,7 +75,6 @@ func CreateApiGateway(stack awscdk.Stack, myLambda awslambda.Function) {
 	})
 }
 
-// Main stack creation function
 func NewMentorshipAppStack(scope constructs.Construct, id string, props *MentorshipAppStackProps) awscdk.Stack {
 	stack := awscdk.NewStack(scope, &id, &props.StackProps)
 
@@ -93,7 +87,6 @@ func NewMentorshipAppStack(scope constructs.Construct, id string, props *Mentors
 	return stack
 }
 
-// Main function for CDK App
 func main() {
 	app := awscdk.NewApp(nil)
 

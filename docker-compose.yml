@@ -2,6 +2,6 @@ version: '3'
 services:
   auth-lambda:
     build:
-      context: ./lambda                # Context points to the Lambda code directory
-      dockerfile: Dockerfile            # Dockerfile to use for building the image
-    image: auth-lambda:latest           # Name of the Docker image
+      context: ./lambda
+      dockerfile: Dockerfile
+    image: auth-lambda:latest
