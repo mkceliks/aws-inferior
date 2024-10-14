@@ -7,6 +7,8 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY lambda/ .
+COPY config/ .
+COPY entity/ .
 
 RUN GOOS=linux GOARCH=amd64 go build -o main
 
