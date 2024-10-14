@@ -1,0 +1,3 @@
+{
+  "app": "go run cdk/cdk_app.go"
+}
