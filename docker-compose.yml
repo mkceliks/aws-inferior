@@ -2,6 +2,6 @@ version: '3'
 services:
   auth-lambda:
     build:
-      context: ./lambda
+      context: .
       dockerfile: Dockerfile
     image: auth-lambda:latest

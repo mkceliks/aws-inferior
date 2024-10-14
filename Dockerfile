@@ -3,11 +3,12 @@ FROM golang:1.19 AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
+
 RUN go mod download
 
-COPY . .
+COPY lambda/ .
 
-RUN GOOS=linux GOARCH=amd64 go build -o master
+RUN GOOS=linux GOARCH=amd64 go build -o main
 
 FROM public.ecr.aws/lambda/go:latest
 
